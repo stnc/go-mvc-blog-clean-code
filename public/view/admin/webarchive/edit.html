@@ -1,0 +1,103 @@
+<!--Loop over the `payload` variable, which is the list of articles-->
+{% extends "../../app.html" %} {% block content %} {% set RootName = 'admin-webarchive' %} {% set routerName = 'admin/webarchive' %} {% if flashMsg %}
+<div class="row">
+    <!-- alert -->
+    <div class="col-md-12 flashMsg">
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert"> {{flashMsg}}
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+        </div>
+    </div>
+    <!-- /.alert -->
+
+</div>
+{%endif%}
+<form method="POST" action="/{{routerName}}/update" accept-charset="UTF-8" class="form-control1" id="{{RootName}}-store" enctype="multipart/form-data">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <input  id="ID" name="ID" value="{{post.ID}}" type="hidden">
+
+    <div class="row">
+
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+               
+                    <h6>Form</h6>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="Title">Title</label>
+                        <input class="form-control {{err.Title_valid}}" id="Title" name="Title"
+                         value="{{post.Title}}" type="text" placeholder="Site Başlığı"> {% if err.Title_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.Title}}</div>
+                        {% endif %}
+                    </div>
+
+                    <label for="Title">Links </label>
+                    <input  id="LinksAll" name="LinksAll" value="{{post.LinksAll}}" type="hidden">
+                    <div class="row">
+
+               
+
+                    {% for WebArchiveLink in post.WebArchiveLinks %}
+            
+                    <div class="form-group col-sm-9">
+                        <input class="form-control" id="Title" readonly disabled name="Title" value="{{WebArchiveLink.Link}}" type="text"> 
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="/admin/webarchive/run/{{WebArchiveLink.ID}}" class="btn btn-sm btn-primary"> RUN</a>
+                        {% if WebArchiveLink.Pdf %}
+                        <a href="#" class="btn btn-sm btn-warning"> PDF</a>
+                        {% endif %}
+                        {% if WebArchiveLink.Png %}
+                        <a  class="btn btn-sm btn-warning"> png</a>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Excerpt  </strong>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="Excerpt">Excerpt  </label>
+                                <textarea class="form-control {{err.Excerpt_valid}}" id="Excerpt" name="Excerpt" rows="9" placeholder="Short Content  Content ...">{{ post.Excerpt }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Actions</strong>
+                        </div>
+        
+                        <div class="card-footer">
+                            <button class="btn btn-sm btn-primary" type="submit"> Save</button>
+                            <button class="btn btn-sm btn-danger" type="reset"> Cancel</button>
+                        </div>
+
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+     
+    </div>
+</form>
+
+{% endblock %}

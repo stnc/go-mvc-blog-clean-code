@@ -1,0 +1,133 @@
+<!--Loop over the `payload` variable, which is the list of articles-->
+{% extends "../../app.html" %} {% block content %}
+ {% set RootName = 'admin-gKurban' %} 
+ {% set routerName ='admin/gKurban' %}
+<style>
+    .text-decoration-line-through {
+        text-decoration: line-through !important;
+    }
+</style>
+
+<div class="row">  
+    <div class="col-md-6"> 
+    <h1 class="title"><b>Proje Bitmesine Kalan Süre</b></h1>
+    <div class="countdown" id="normal-countdown" data-date="2021/04/10"></div>
+</div>
+    <div class="col-md-6"> 
+    <h1 class="title"><b>Diğer Kalan Süre</b></h1>
+    <div class="countdown" id="kurban-countdown" data-date="2021/07/19"></div>
+</div>
+</div>
+
+
+<div class="row">
+    {% if flashMsg %}
+    <!-- alert -->
+    <div class="col-md-12 flashMsg">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i> Uyarı
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h5><i class="icon fas fa-check"></i> Uyarı!</h5>
+                    {{flashMsg}}
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.alert -->
+    {%endif%}
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block jsInline %}
+
+
+<script src="/assets/js/jquery.countdown.min.js"></script>
+<script>
+
+
+    
+
+
+(function ($) {
+
+"use strict";
+
+
+//NORMAL TIMES COUNTDOWN
+
+if(isExists('#normal-countdown')){
+var date = $('#normal-countdown').data('date');
+$('#normal-countdown').countdown(date, function(event) {
+  var $this = $(this).html(event.strftime(''
+    + '<div class="time-sec"><h3 class="main-time">%D</h3> <span>Gün</span></div>'
+    + '<div class="time-sec"><h3 class="main-time">%H</h3> <span>Saat</span></div>'
+    + '<div class="time-sec"><h3 class="main-time">%M</h3> <span>Dakika</span></div>'
+    + '<div class="time-sec"><h3 class="main-time">%S</h3> <span>Saniye</span></div>'));
+});
+}
+
+
+if(isExists('#kurban-countdown')){
+var date = $('#kurban-countdown').data('date');
+$('#kurban-countdown').countdown(date, function(event) {
+  var $this = $(this).html(event.strftime(''
+    + '<div class="time-sec"><h3 class="main-time">%D</h3> <span>Gün</span></div>'
+    + '<div class="time-sec"><h3 class="main-time">%H</h3> <span>Saat</span></div>'
+    + '<div class="time-sec"><h3 class="main-time">%M</h3> <span>Dakika</span></div>'
+    + '<div class="time-sec"><h3 class="main-time">%S</h3> <span>Saniye</span></div>'));
+});
+}
+
+
+
+
+
+
+
+})(jQuery);
+
+
+
+function isExists(elem){
+	if ($(elem).length > 0) { 
+		return true;
+	}
+	return false;
+}
+
+</script>
+
+
+{% endblock %}

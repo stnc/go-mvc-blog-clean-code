@@ -1,0 +1,105 @@
+<!--Loop over the `payload` variable, which is the list of articles-->
+{% extends "../../app.html" %} {% block content %} 
+{% set RootName = 'admin-webarchive' %} {% set routerName = 'admin/webarchive' %}
+<div class="row">
+    {% if flashMsg %}
+    <!-- alert -->
+    <div class="col-md-12 flashMsg">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i> Warning
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h5><i class="icon fas fa-check"></i> Warning!</h5>
+                    {{flashMsg}}
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.alert -->
+    {%endif%}
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header"><i class="fa fa-align-justify"></i> Post List</div>
+            <div class="card-body">
+                <table class="table table-responsive-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Post</th>
+                            <th>Date registered</th>  
+                            <th>Status</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        {% for post in posts %}
+
+                        <tr>
+                            <td>{{post.Title|title|truncatechars:35 }}</td>
+                            <td>{{post.CreatedAt}}</td>
+                            <td><span class="badge badge-success">
+                                {% if post.PostStatus %}
+                                  Open
+                                  {% else  %}
+                                  Close 
+                               {% endif  %} 
+                            </span></td>
+                            <td> <a class="btn btn-block btn-warning" href="/{{routerName}}/edit/{{post.ID}}">Edit</a>
+                                <a class="btn btn-block btn-danger" href="/{{routerName}}/delete/{{post.ID}}">Delete</a> 
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+                <nav>
+
+                   {% if paginator.HasPages() %}
+                    <ul class="pagination">
+                        {%if paginator.HasPrev() %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{paginator.PageLinkFirst()}}">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="{{paginator.PageLinkPrev()}}">&lt;</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled"><a class="page-link"> First</a></li>
+                        <li class="page-item disabled"><a class="page-link">&lt;</a></li>
+                        {% endif %} {% for page in paginator.Pages%}
+
+                        <li {% if paginator.IsActive(page) %} class="active page-item" {% endif %}>
+                            <a class="page-link" href="{{ paginator.PageLink(page) }} ">{{page}}</a>
+                        </li>
+
+                        {% endfor %} {% if paginator.HasNext %}
+                        <li class="page-item"><a class="page-link" href="{{paginator.PageLinkNext()}}">&gt; </a></li>
+                        <li class="page-item"><a class="page-link" href="{{paginator.PageLinkLast()}}">Last </a></li>
+                        {% else %}
+                        <li class="disabled page-item"><a class="page-link">&gt;</a></li>
+                        <li class="disabled page-item"><a class="page-link">Last</a></li>
+                        {%endif%}
+                    </ul>
+                    {%endif%}
+                </nav>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %} {% block jsInline %} {% endblock %}

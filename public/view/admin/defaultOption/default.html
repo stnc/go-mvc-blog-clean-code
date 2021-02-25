@@ -1,0 +1,66 @@
+<!--Loop over the `payload` variable, which is the list of articles-->
+{% extends "../../app.html" %} {% block content %} 
+{% set RootName = 'admin-post' %} {% set routerName = 'admin/post' %} {% if flashMsg %}
+<div class="row">
+    <!-- alert -->
+    <div class="col-md-12 flashMsg">
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert"> {{flashMsg}}
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+        </div>
+    </div>
+    <!-- /.alert -->
+
+</div>
+{%endif%}
+<form method="POST" action="/{{routerName}}/update" accept-charset="UTF-8" class="form-control1" id="{{RootName}}-update" enctype="multipart/form-data">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <input name="_method" type="hidden" value="PUT">
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <strong>{% if title %} {{ title }} - Microblog {% else %} Welcome to Microblog
+                                {% endif %}</strong>
+                    <small>Form</small>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+
+
+
+      
+                <div class="col-md-12">
+                    <div class="card">
+          
+
+
+
+                        <div class="card-footer">
+                            <input class="form-control {{err.ID}}" id="ID" name="ID" value="{{post.ID}}" type="hidden">
+
+                            <button class="btn btn-sm btn-primary" type="submit"> Kaydet</button>
+                            <button class="btn btn-sm btn-danger" type="reset"> VAZGEÇ</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+{% endblock %} 
+{% block jsInline %}
+
+
+<script type="text/javascript">
+
+</script>
+{% endblock %}

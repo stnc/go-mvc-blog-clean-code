@@ -1,0 +1,312 @@
+<!--Loop over the `payload` variable, which is the list of articles-->
+{% extends "../../app.html" %} {% block content %} {% set RootName = 'admin-post' %} {% set routerName = 'admin/post' %} {% if flashMsg %}
+<div class="row">
+    <!-- alert -->
+    <div class="col-md-12 flashMsg">
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert"> {{flashMsg}}
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+        </div>
+    </div>
+    <!-- /.alert -->
+
+</div>
+{%endif%}
+<form method="POST" action="/{{routerName}}/update" accept-charset="UTF-8" class="form-control1" id="{{RootName}}-update" enctype="multipart/form-data">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <input name="_method" type="hidden" value="PUT">
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <strong>{% if title %} {{ title }} - Microblog {% else %} Welcome to Microblog
+                                {% endif %}</strong>
+                    <small>Form</small>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="PostTitle">Title</label>
+                        <input class="form-control {{err.PostTitle_valid}}" id="PostTitle" name="PostTitle" value="{{post.PostTitle}}" type="text" placeholder="Site Başlığı"> {% if err.PostTitle_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.PostTitle}}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label> Content :</label> {% if err.PostContent_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.PostContent}}</div>
+                        {% endif %}
+                        <textarea id="PostContent" name="PostContent" class="form-control">{{post.PostContent}}</textarea> {% if err.PostContent_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.PostContent}}</div>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Post Excerpt</strong>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="PostExcerpt">Post Excerpt</label>
+                                <textarea class="form-control {{err.PostExcerpt_valid}}" id="PostExcerpt" name="PostExcerpt" rows="9" placeholder="Kısa Açıklama...">{{ post.PostExcerpt }}</textarea>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Categories</strong>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label> </label>
+                                <div>
+                                    {% for cat in catsData%}
+                                    <div class="form-check checkbox">
+                                        <input class="form-check-input" id="catr-{{ cat.ID }}" {%if cat.ID==cat.SelectedID %} checked {% endif %} name="cats" type="checkbox" value="{{ cat.ID }}">
+                                        <label class="form-check-label" for="catr-{{ cat.ID }}">{{ cat.Name|title }}</label>
+                                    </div>
+
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Picture Info</strong>
+                        </div>
+
+                        <div class="card-body">
+
+                            {% if err.picture_error %}
+                            <div class="invalid-feedback" style="display:block">{{err.picture_error}}</div>
+                            {% endif %} {% if post.Picture %}
+                            <div class="col-md-4">
+                                <div id="alanOnizleme">
+                                    <h5 class="text-center">Selected Picture</h5>
+                                    <img id="resimOnizleme" src="/upload/{{post.Picture}}" class="w-100" style="height:10rem!important;" />
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label for="exampleInputFile">Picture</label>
+
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input form-control {{err.picture_valid}}" name="picture" id="Picture">
+                                        <label class="custom-file-label" for="Picture"></label>
+                                    </div>
+
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="">Resim Seç</span>
+                                    </div>
+
+                                    {% if err.picture_error %}
+                                    <div class="invalid-feedback" style="display:block">{{err.picture_error}}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <input class="form-control {{err.ID}}" id="ID" name="ID" value="{{post.ID}}" type="hidden">
+
+                            <button class="btn btn-sm btn-primary" type="submit"> SAVE</button>
+                            <button class="btn btn-sm btn-danger" type="reset"> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+{% endblock %} {% block jsInline %}
+<!-- <script src="/assets/vendors/jqueryValidate/jquery.validate.min.js"></script> -->
+<!-- <script src="/assets/vendors/jqueryUnob/jquery.validate.unobtrusive.min.js"></script> -->
+<link href="/assets//vendors/summernote/summernote-bs4.min.css" rel="stylesheet" />
+<script src="/assets/vendors/summernote/summernote-bs4.min.js"></script>
+<script src="/assets/js/summernote-file.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#Picture").change(function(e) {
+
+            $("#alanOnizleme").show();
+            $("#resimOnizleme").attr('src', URL.createObjectURL(e.target.files[0]));
+        });
+    });
+
+    $('#PostContent').summernote({
+        height: 500, // set editor height
+        minHeight: null, // set minimum height of editor
+        maxHeight: null, // set maximum height of editor
+        focus: true, // set focus to editable area after initializing summernote
+        callbacks: {
+            onImageUpload: function(files) {
+
+                for (let i = 0; i < files.length; i++) {
+                    myOwnCallBack(files[i]);
+                }
+            },
+
+            onFileUpload: function(files) {
+                //myOwnCallBack(file[0]);
+
+                for (let i = 0; i < files.length; i++) {
+                    myOwnCallBack(files[i]);
+                    //   UploadImage(files[i]);
+                }
+
+            },
+
+        },
+        toolbar: [
+            //  ['insert', ['link', 'picture', 'video', 'file']],
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'hr', 'file']],
+            ['view', ['fullscreen', 'codeview']],
+            // ['help', ['help']]
+        ],
+    });
+
+    function myOwnCallBack(file) {
+        var url = '@Url.Action("UploadFile", "Post")';
+        formData = new FormData();
+        formData.append("aUploadedFile", file);
+        $.ajax({
+            data: formData,
+            type: "POST",
+            url: url, //Your own back-end uploader
+            cache: false,
+            contentType: false,
+            processData: false,
+            xhr: function() { //Handle progress upload
+                let myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
+                return myXhr;
+            },
+            success: function(FileUrl) {
+                    // if (reponse.status === true) {
+                    let listMimeImg = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg'];
+                    let listMimeAudio = ['audio/mpeg', 'audio/ogg'];
+                    let listMimeVideo = ['video/mpeg', 'video/mp4', 'video/webm'];
+                    let elem;
+
+                    if (listMimeImg.indexOf(file.type) > -1) {
+                        //Picture
+                        //$('.summernote').summernote('editor.insertImage', reponse.filename);
+                        var imgNode = document.createElement('img');
+                        imgNode.src = FileUrl;
+                        $('#PostContent').summernote('insertNode', imgNode);
+
+                    } else if (listMimeAudio.indexOf(file.type) > -1) {
+                        //Audio
+                        elem = document.createElement("audio");
+                        elem.setAttribute("src", FileUrl);
+                        elem.setAttribute("controls", "controls");
+                        elem.setAttribute("preload", "metadata");
+                        $('#PostContent').summernote('editor.insertNode', elem);
+                    } else if (listMimeVideo.indexOf(file.type) > -1) {
+                        //Video
+                        elem = document.createElement("video");
+                        elem.setAttribute("src", FileUrl);
+                        elem.setAttribute("controls", "controls");
+                        elem.setAttribute("preload", "metadata");
+                        $('#PostContent').summernote('editor.insertNode', elem);
+                    } else {
+                        //Other file type
+
+                        elem = document.createElement("a");
+                        let linkText = document.createTextNode(file.name);
+                        elem.appendChild(linkText);
+                        elem.title = file.name;
+                        elem.href = FileUrl;
+                        $('#PostContent').summernote('editor.insertNode', elem);
+                    }
+                }
+                //}
+        });
+    }
+
+    function progressHandlingFunction(e) {
+        if (e.lengthComputable) {
+            //Log current progress
+            console.log((e.loaded / e.total * 100) + '%');
+
+            //Reset progress on complete
+            if (e.loaded === e.total) {
+                console.log("Upload finished.");
+            }
+        }
+    }
+
+    function UploadImage(file) {
+        var url = '@Url.Action("UploadFile", "Post")';
+        alert("s");
+        formData = new FormData();
+        formData.append("aUploadedFile", file);
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(FileUrl) {
+                // alert(FileUrl);
+                var imgNode = document.createElement('img');
+                imgNode.src = FileUrl;
+                // $('#Content').summernote('insertNode', imgNode);
+                $('#PostContent').summernote('editor.insertImage', FileUrl);
+
+            },
+            error: function(data) {
+                alert(data.responseText);
+            }
+        });
+    }
+
+    //$(document).on("submit", ".postData", function (e) {
+    //    $("#PostContent").val($('#PostContent').code());
+    //    return true;
+    //});
+
+    $('.note-codable').on('blur', function() {
+        if ($('#PostContent').summernote('codeview.isActivated')) {
+            $('#PostContent').summernote('codeview.deactivate');
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,120 @@
+<!--Loop over the `payload` variable, which is the list of articles-->
+{% extends "../../app.html" %} {% block content %} {% set RootName = 'admin-webarchive' %} {% set routerName = 'admin/webarchive' %}
+
+<div class="row">
+    {% if flashMsg %}
+    <!-- alert -->
+    <div class="col-md-12 flashMsg">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i> Warning
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h5><i class="icon fas fa-check"></i> Warning!</h5>
+                    {{flashMsg}}
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.alert -->
+    {%endif%}
+</div>
+
+<form method="POST" action="/{{routerName}}/store" accept-charset="UTF-8" class="form-control1" id="{{RootName}}-store" enctype="multipart/form-data">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <div class="row">
+
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+               
+                    <h6>Form</h6>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="Title">İçerik Başlığı</label>
+                        <input class="form-control {{err.Title_valid}}" id="Title" name="Title" value="{{post.Title}}" type="text" placeholder="Site Başlığı"> {% if err.Title_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.Title}}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label> Linkler  :</label> {% if err.LinksAll_error %}
+                        {% endif %}
+                        <textarea id="LinksAll" rows="12" cols="50" name="LinksAll" class="form-control {{err.LinksAll_valid}}">{{post.LinksAll}}</textarea> {% if err.LinksAll_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.LinksAll}}</div>
+                        {% endif %}
+                        <small>linkleri istediğiniz gibi yazınız ama arada bir adet boşluk olmasına dikkat ediniz Örnek</small>
+                        <hr>
+                        <small>
+                        
+                            https://www.kayseriviphaber.com/icindeki-girisimciyi-fark-et/1706/
+                            http://www.ertehaber.com/erciyes-teknopark-icindeki-girisimciyi-fark-et-etkinligi-duzenledi-148597h.htm
+                            http://www.bursahaber.com/kayseri/erciyes-teknopark-icindeki-girisimciyi-fark-et-etkinligi-duzenledi-h1918470.html
+                            https://kayserihakimiyet2000.com/haber/erciyes-teknopark-icindeki-girisimciyi-fark-et-etkinligi-duzenledi-10867.html
+                            https://www.haberler.com/erciyes-teknopark-icindeki-girisimciyi-fark-et-13753622-haberi
+                            https://www.gazeterize.com/kayseri/erciyes-teknopark-icindeki-girisimciyi-fark-et-etkinligi-duzenledi-h14237386.html
+                            https://www.haberekspresi.net/erciyes-teknopark-icindeki-girisimciyi-fark-et-etkinligi-duzenledi-6942h.htm
+                        </small>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Short Content   </strong>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="Excerpt">Short Content   </label>
+                                <textarea class="form-control {{err.Excerpt_valid}}" id="Excerpt" name="Excerpt" rows="9" placeholder="Short Content  Content ...">{{ post.Excerpt }}</textarea>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Hareketler</strong>
+                        </div>
+
+                
+                        <div class="card-footer">
+
+                            <button class="btn btn-sm btn-primary" type="submit"> Çalıştır</button>
+                            <button class="btn btn-sm btn-danger" type="reset"> İptal</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{% endblock %} {% block jsInline %}
+
+{% endblock %}
