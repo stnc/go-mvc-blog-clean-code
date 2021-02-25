@@ -3,6 +3,8 @@
 
 #  GOLANG GIN+PONGO2+GORM and REACT.JS 
 
+## golang solid principles
+
 uses 
 
 https://react.semantic-ui.com/
