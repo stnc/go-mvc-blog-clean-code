@@ -19,7 +19,7 @@ func FormatFile(fn string) string {
 	return newFileName
 }
 
-func newFileName(uploadFilePath, filenameOrg string) (string, string) {
+func newFileNameFunc(uploadFilePath, filenameOrg string) (string, string) {
 
 	filenameExtension := filepath.Ext(filenameOrg)
 

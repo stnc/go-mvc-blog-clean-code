@@ -88,7 +88,7 @@ func (fu *fileUpload) UploadFileForMinio(file *multipart.FileHeader) (string, er
 //UploadFile standart upload
 func (fu *fileUpload) UploadFile(filest *multipart.FileHeader, originalName string) (filename string, errorReturn string) {
 	var uploadFilePath string = "public/upl/"
-	var deleteFilename string
+	// var deleteFilename string
 	// var filename string
 	// var errorReturn string
 
@@ -109,7 +109,7 @@ func (fu *fileUpload) UploadFile(filest *multipart.FileHeader, originalName stri
 			}
 
 			filename = newFileNameFunc(filest.Filename)
-			deleteFilename = filename
+			// deleteFilename = filename
 
 			fmt.Println(filename)
 
