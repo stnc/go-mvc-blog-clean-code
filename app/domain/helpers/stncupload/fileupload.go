@@ -86,8 +86,9 @@ func (fu *fileUpload) UploadFileForMinio(file *multipart.FileHeader) (string, er
 //https://socketloop.com/tutorials/golang-how-to-verify-uploaded-file-is-image-or-allowed-file-types
 //https://www.golangprograms.com/how-to-get-dimensions-of-an-image-jpg-jpeg-png-or-gif.html
 //UploadFile standart upload
-func (fu *fileUpload) UploadFile(filest *multipart.FileHeader, originalName string) (filename, errorReturn string) {
+func (fu *fileUpload) UploadFile(filest *multipart.FileHeader, originalName string) (filename string, errorReturn string) {
 	var uploadFilePath string = "public/upl/"
+	var deleteFilename string
 	// var filename string
 	// var errorReturn string
 
@@ -107,9 +108,12 @@ func (fu *fileUpload) UploadFile(filest *multipart.FileHeader, originalName stri
 				filename = "false"
 			}
 
-			newFileName, filename := newFileName(uploadFilePath, filest.Filename)
+			filename = newFileNameFunc(filest.Filename)
+			deleteFilename = filename
 
-			out, err := os.Create(newFileName)
+			fmt.Println(filename)
+
+			out, err := os.Create(uploadFilePath + filename)
 
 			defer out.Close()
 
@@ -127,29 +131,28 @@ func (fu *fileUpload) UploadFile(filest *multipart.FileHeader, originalName stri
 				filename = "false"
 			}
 
-			ret := realImage(newFileName)
-			if ret != "true" {
-				errorReturn = ret
+			ret := realImage(uploadFilePath + filename)
+			if ret == false {
+				errorReturn = "Yüklediğiniz bir resim dosyası değildir"
 				filename = "false"
-				//TODO: bu kısım veritabanına gitsin daha sonra silsin gibi bişey olacak
-				// errFile := os.Remove(newFileName)
+
+				// TODO: bu kısım veritabanına gitsin daha sonra silsin gibi bişey olacak
+				// errFile := os.Remove(uploadFilePath + deleteFilename)
 				// if errFile != nil {
 				// 	fmt.Println("errFile.Error()")
 				// 	fmt.Println(errFile.Error())
 				// 	errorReturn = errFile.Error()
 				// 	return filename, errorReturn
 				// }
-
 			}
 
-			return filename, errorReturn
 		} else {
 			return originalName, ""
 		}
 	} else {
 		return originalName, ""
 	}
-
+	return filename, errorReturn
 }
 
 func (fu *fileUpload) MultipleUploadFile(files []*multipart.FileHeader, originalName string) {
@@ -185,14 +188,16 @@ func (fu *fileUpload) MultipleUploadFile(files []*multipart.FileHeader, original
 
 }
 
-func realImage(fileName string) string {
-	var errorReturn string
+func realImage(fileName string) bool {
+
+	var returnData bool
 	// open the uploaded file
 	file, err := os.Open(fileName)
-
+	defer file.Close()
 	if err != nil {
+		//TODO: buraya log koymak gerekiyor
 		fmt.Println(err)
-		errorReturn = err.Error()
+		err.Error()
 		// os.Exit(1)
 	}
 
@@ -201,7 +206,7 @@ func realImage(fileName string) string {
 
 	if err != nil {
 		fmt.Println(err)
-		errorReturn = err.Error()
+		err.Error()
 		// os.Exit(1)
 	}
 
@@ -209,19 +214,19 @@ func realImage(fileName string) string {
 
 	switch filetype {
 	case "image/jpeg", "image/jpg":
-		errorReturn = "true"
+		returnData = true
 
 	case "image/gif":
-		errorReturn = "true"
+		returnData = true
 
 	case "image/png":
-		errorReturn = "true"
+		returnData = true
 
 	// case "application/pdf": // not image, but application !
 	// 	fmt.Println(filetype)
 	default:
-		errorReturn = " gerçek bir resim dosyası değildir"
+		returnData = false
 	}
 
-	return errorReturn
+	return returnData
 }

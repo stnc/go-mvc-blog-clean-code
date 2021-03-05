@@ -128,15 +128,13 @@ func (access *Post) Store(c *gin.Context) {
 	// filenameForm, _ := c.FormFile(sendFileName)
 	// filename, uploadError := stncupload.NewFileUpload().UploadFile(filenameForm, c.PostForm("Resim2"))
 
-	form, _ := c.MultipartForm()
-	files := form.File[sendFileName]
-	stncupload.NewFileUpload().MultipleUploadFile(files, c.PostForm("Resim2"))
-	// filename, uploadError := stncupload.NewFileUpload().MultipleUploadFile(files, c.PostForm("Resim2"))
+	filenameForm, _ := c.FormFile(sendFileName)
+	filename, uploadError := stncupload.NewFileUpload().UploadFile(filenameForm, c.PostForm("Resim2"))
 
-	// if filename == "false" {
-	// 	savePostError[sendFileName+"_error"] = uploadError
-	// 	savePostError[sendFileName+"_valid"] = "is-invalid"
-	// }
+	if filename == "false" {
+		savePostError[sendFileName+"_error"] = uploadError
+		savePostError[sendFileName+"_valid"] = "is-invalid"
+	}
 
 	// filename := "bos"
 	fmt.Println(savePostError)
