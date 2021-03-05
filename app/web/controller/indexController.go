@@ -41,11 +41,38 @@ func OptionsDefault(c *gin.Context) {
 	option3 := entity.Options{OptionName: "hisse_adeti", OptionValue: "7"}
 	db.Debug().Create(&option3)
 
-	cat := entity.Categories{Name: "News"}
-	db.Debug().Create(&cat)
+	option4 := entity.Options{OptionName: "satis_birim_fiyati_1", OptionValue: ""}
+	db.Debug().Create(&option4)
+
+	option5 := entity.Options{OptionName: "satis_birim_fiyati_2", OptionValue: ""}
+	db.Debug().Create(&option5)
+
+	option6 := entity.Options{OptionName: "satis_birim_fiyati_3", OptionValue: ""}
+	db.Debug().Create(&option6)
+
+	option7 := entity.Options{OptionName: "dusuk_agirlik_kilo", OptionValue: ""}
+	db.Debug().Create(&option7)
+
+	option78 := entity.Options{OptionName: "orta_agirlik_kilo", OptionValue: ""}
+	db.Debug().Create(&option78)
+
+	option786 := entity.Options{OptionName: "yuksek_agirlik_kilo", OptionValue: ""}
+	db.Debug().Create(&option786)
+
+	option8 := entity.Options{OptionName: "alis_birim_fiyati_1", OptionValue: ""}
+	db.Debug().Create(&option8)
+
+	option9 := entity.Options{OptionName: "alis_birim_fiyati_2", OptionValue: ""}
+	db.Debug().Create(&option9)
+
+	option10 := entity.Options{OptionName: "alis_birim_fiyati_3", OptionValue: ""}
+	db.Debug().Create(&option10)
+
+	option11 := entity.Options{OptionName: "otomatik_sira_2021", OptionValue: "1"}
+	db.Debug().Create(&option11)
 
 	user := entity.User{FirstName: "Sel", LastName: "t", Email: "selmantunc@gmail.com", Password: "$2a$10$QPiWAgMpwHBkDjBL5pPd2.HBlfdniuGOvZd5kh.ILLjKFo67rvfsO"}
 	db.Debug().Create(&user)
 
-	c.JSON(http.StatusOK, "done")
+	c.JSON(http.StatusOK, "yapıldı")
 }

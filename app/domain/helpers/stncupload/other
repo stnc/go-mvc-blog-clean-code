@@ -1,0 +1,74 @@
+func (fu *fileUpload) UploadFileOrginal(filest *multipart.FileHeader, originalName string) (filename, errorReturn string) {
+	var uploadFilePath string = "public/upl/"
+	// var filename string
+	// var errorReturn string
+
+	if filest != nil {
+		f, err := filest.Open()
+		if err != nil {
+			errorReturn = err.Error()
+		}
+		defer f.Close()
+
+		if filest.Header != nil {
+
+			size := filest.Size
+			var size2 = strconv.FormatUint(uint64(size), 10)
+			if size > int64(1024000*5) { // 1 MB
+				errorReturn = "Resim boyutu çok yüksek maximum 5 MB olmalıdır" + size2
+				filename = "false"
+			}
+
+			filenameOrg := filest.Filename
+
+			newFileName, filename, realFilenameSlug, filenameExtension := newFileName(uploadFilePath, filenameOrg)
+
+			out, err := os.Create(newFileName)
+
+			if err != nil {
+				log.Fatal(err)
+				errorReturn = err.Error()
+				filename = "false"
+			}
+			defer out.Close()
+			_, err = io.Copy(out, f)
+
+			if err != nil {
+				log.Fatal(err)
+				errorReturn = err.Error()
+				filename = "false"
+			}
+
+			buf, _ := ioutil.ReadFile(uploadFilePath + filename)
+
+			defer out.Close()
+			//TODO:
+			//buraya resim uzantıları gelmeli ona göre bakmalı pdf doc yuklemek isterse falan ne olacak ??
+			if filetype.IsImage([]byte(buf)) {
+				filename = realFilenameSlug + filenameExtension
+			} else {
+				out.Close()
+				f.Close()
+				fmt.Println(newFileName)
+				errFile := os.Remove(newFileName)
+				if errFile != nil {
+					fmt.Println("errFile.Error()")
+					fmt.Println(errFile.Error())
+					errorReturn = errFile.Error()
+					return filename, errorReturn
+				}
+				errorReturn += filenameOrg + " gerçek bir resim dosyası değildir"
+				filename = "false"
+
+			}
+			out.Close()
+			f.Close()
+			return filename, errorReturn
+		} else {
+			return "", ""
+		}
+	} else {
+		return originalName, ""
+	}
+
+}

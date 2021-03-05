@@ -1,5 +1,5 @@
 <!--Loop over the `payload` variable, which is the list of articles-->
-{% extends "../../app.html" %} {% block content %} {% set RootName = 'admin-post' %} {% set routerName = 'admin/post' %} {% if flashMsg %}
+{% extends "../app.html" %} {% block content %} {% set RootName = 'admin-post' %} {% set routerName = 'admin/post' %} {% if flashMsg %}
 <div class="row">
     <!-- alert -->
     <div class="col-md-12 flashMsg">
@@ -29,14 +29,14 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label for="PostTitle">Title</label>
+                        <label for="PostTitle">İçerik Başlığı</label>
                         <input class="form-control {{err.PostTitle_valid}}" id="PostTitle" name="PostTitle" value="{{post.PostTitle}}" type="text" placeholder="Site Başlığı"> {% if err.PostTitle_error %}
                         <div class="invalid-feedback" style="display:block">{{err.PostTitle}}</div>
                         {% endif %}
                     </div>
 
                     <div class="form-group">
-                        <label> Content :</label> {% if err.PostContent_error %}
+                        <label> Açıklama :</label> {% if err.PostContent_error %}
                         <div class="invalid-feedback" style="display:block">{{err.PostContent}}</div>
                         {% endif %}
                         <textarea id="PostContent" name="PostContent" class="form-control">{{post.PostContent}}</textarea> {% if err.PostContent_error %}
@@ -53,12 +53,12 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Post Excerpt</strong>
+                            <strong>Kısa açıklama</strong>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="PostExcerpt">Post Excerpt</label>
+                                <label for="PostExcerpt">Kısa açıklama <span> *başlık metinlerde olan </span> </label>
                                 <textarea class="form-control {{err.PostExcerpt_valid}}" id="PostExcerpt" name="PostExcerpt" rows="9" placeholder="Kısa Açıklama...">{{ post.PostExcerpt }}</textarea>
                             </div>
 
@@ -71,12 +71,12 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Categories</strong>
+                            <strong>Kategori Bilgileri</strong>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label> </label>
+                                <label> Seçiniz (mecburi değildir)</label>
                                 <div>
                                     {% for cat in catsData%}
                                     <div class="form-check checkbox">
@@ -95,7 +95,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Picture Info</strong>
+                            <strong>Resim Bilgileri</strong>
                         </div>
 
                         <div class="card-body">
@@ -105,17 +105,18 @@
                             {% endif %} {% if post.Picture %}
                             <div class="col-md-4">
                                 <div id="alanOnizleme">
-                                    <h5 class="text-center">Selected Picture</h5>
+                                    <h5 class="text-center">Seçtiğiniz resim:</h5>
                                     <img id="resimOnizleme" src="/upload/{{post.Picture}}" class="w-100" style="height:10rem!important;" />
                                 </div>
                             </div>
                             {% endif %}
                             <div class="form-group">
-                                <label for="exampleInputFile">Picture</label>
+                                <label for="exampleInputFile">Resim</label>
 
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input form-control {{err.picture_valid}}" name="picture" id="Picture">
+                                        <input type="hidden"  name="picture2" value="{{post.Picture}}" id="Picture">
+                                        <input type="file" multiple class="custom-file-input form-control {{err.picture_valid}}" name="picture"  id="Picture">
                                         <label class="custom-file-label" for="Picture"></label>
                                     </div>
 
@@ -134,8 +135,8 @@
                         <div class="card-footer">
                             <input class="form-control {{err.ID}}" id="ID" name="ID" value="{{post.ID}}" type="hidden">
 
-                            <button class="btn btn-sm btn-primary" type="submit"> SAVE</button>
-                            <button class="btn btn-sm btn-danger" type="reset"> Cancel</button>
+                            <button class="btn btn-sm btn-primary" type="submit"> Kaydet</button>
+                            <button class="btn btn-sm btn-danger" type="reset"> VAZGEÇ</button>
                         </div>
                     </div>
                 </div>
@@ -149,9 +150,9 @@
 {% endblock %} {% block jsInline %}
 <!-- <script src="/assets/vendors/jqueryValidate/jquery.validate.min.js"></script> -->
 <!-- <script src="/assets/vendors/jqueryUnob/jquery.validate.unobtrusive.min.js"></script> -->
-<link href="/assets//vendors/summernote/summernote-bs4.min.css" rel="stylesheet" />
-<script src="/assets/vendors/summernote/summernote-bs4.min.js"></script>
-<script src="/assets/js/summernote-file.js"></script>
+<link href="/assets/admin/vendors/summernote/summernote-bs4.min.css" rel="stylesheet" />
+<script src="/assets/admin/vendors/summernote/summernote-bs4.min.js"></script>
+<script src="/assets/admin/js/summernote-file.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {

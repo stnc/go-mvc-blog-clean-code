@@ -7,7 +7,7 @@ import (
 	"stncCms/app/domain/entity"
 	"stncCms/app/domain/helpers/stncsession"
 	"stncCms/app/services"
-	"stncCms/app/web.api/controller/fileupload"
+
 	"strconv"
 
 	"github.com/astaxie/beego/utils/pagination"
@@ -22,8 +22,6 @@ type WebArchive struct {
 	webArchiveLinkApp services.WebArchiveLinksAppInterface
 
 	userApp services.UserAppInterface
-
-	fileUpload fileupload.UploadFileInterface
 }
 
 const webArchivePath = "admin/webarchive/"

@@ -14,7 +14,6 @@ import (
 	"stncCms/app/infrastructure/auth"
 
 	apiController "stncCms/app/web.api/controller"
-	"stncCms/app/web.api/controller/fileupload"
 	"stncCms/app/web.api/controller/middleware"
 	"stncCms/app/web/controller"
 
@@ -27,9 +26,22 @@ import (
 )
 
 func init() {
+	//To load our environmental variables.
+
 	if err := godotenv.Load(); err != nil {
 		log.Println("no env gotten")
 	}
+
+	/* //bu sunucuda çalışıyor
+		    dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	        if err != nil {
+	            log.Fatal(err)
+	        }
+	        environmentPath := filepath.Join(dir, ".env")
+	        err = godotenv.Load(environmentPath)
+	        fatal(err)
+	*/
+
 }
 
 func main() {
@@ -40,11 +52,6 @@ func main() {
 	user := os.Getenv("DB_USER")
 	dbname := os.Getenv("DB_NAME")
 	port := os.Getenv("DB_PORT")
-
-	// err := beeep.Alert("Uygulama çalıştı", "Web Server Run localhost:"+port, "assets/warning.png")
-	// if err != nil {
-	// 	panic(err)
-	// }
 
 	//redis details
 	redisHost := os.Getenv("REDIS_HOST")
@@ -67,16 +74,16 @@ func main() {
 
 	token := auth.NewToken()
 
-	upload := fileupload.NewFileUpload()
+	// upload := stncupload.NewFileUpload()
 
 	usersAPI := apiController.InitUsers(services.User, redisService.Auth, token)
 
 	postsAPI := apiController.InitPost(services.Post, services.User, redisService.Auth, token)
 
-	posts := controller.InitPost(services.Post, services.CatPost, services.Cat, services.Lang, services.User, upload)
+	posts := controller.InitPost(services.Post, services.CatPost, services.Cat, services.Lang, services.User)
 
 	login := controller.InitLogin(services.User)
-
+	//cat := controller.InitPost(services.Post, services.User)
 	authenticate := apiController.NewAuthenticate(services.User, redisService.Auth, token)
 
 	webArchive := controller.InitWebArchive(services.WebArchive, services.WebArchiveLink, services.User)
@@ -98,8 +105,6 @@ func main() {
 	r := gin.Default()
 
 	r.Use(gin.Recovery())
-
-	//TODO: https://github.com/denisbakhtin/ginblog/blob/master/main.go burada memstore kullanımı var ona bakılablir
 
 	store := cookie.NewStore([]byte("SpeedyGonzales"))
 
@@ -150,6 +155,7 @@ func main() {
 		v1.PUT("post/:post_id", middleware.AuthMiddleware(), postsAPI.UpdatePost)
 		v1.GET("post/:post_id", postsAPI.GetPostAndCreator)
 		v1.DELETE("post/:post_id", middleware.AuthMiddleware(), postsAPI.DeletePost)
+
 		v1.POST("login", authenticate.Login)
 		v1.POST("logout", authenticate.Logout)
 		v1.POST("refresh", authenticate.Refresh)

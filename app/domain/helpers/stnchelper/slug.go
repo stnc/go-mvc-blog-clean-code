@@ -42,7 +42,7 @@ func GenericName(title string, size int) string {
 	name = Slugify(title, size)
 	currentTime := time.Now()
 	dateadd := currentTime.Format("15_04_05")
-	return name + "__" + dateadd
+	return name + "_" + dateadd
 }
 
 //Validate fluent validation

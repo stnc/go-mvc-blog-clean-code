@@ -1,5 +1,5 @@
 <!--Loop over the `payload` variable, which is the list of articles-->
-{% extends "../../app.html" %} {% block content %} {% set RootName = 'admin-post' %} {% set routerName = 'admin/post' %}
+{% extends "../app.html" %} {% block content %} {% set RootName = 'admin-post' %} {% set routerName = 'admin/post' %}
 
 <div class="row">
     {% if flashMsg %}
@@ -8,14 +8,14 @@
         <div class="card card-default">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-exclamation-triangle"></i> Warning!
+                    <i class="fas fa-exclamation-triangle"></i> Uyarı
                 </h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="alert alert-info alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <h5><i class="icon fas fa-check"></i> Warning!</h5>
+                    <h5><i class="icon fas fa-check"></i> Uyarı!</h5>
                     {{flashMsg}}
                 </div>
             </div>
@@ -42,14 +42,14 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label for="PostTitle">Title</label>
-                        <input class="form-control {{err.PostTitle_valid}}" id="PostTitle" name="PostTitle" value="{{post.PostTitle}}" type="text" placeholder="Title"> {% if err.PostTitle_error %}
+                        <label for="PostTitle">İçerik Başlığı</label>
+                        <input class="form-control {{err.PostTitle_valid}}" id="PostTitle" name="PostTitle" value="{{post.PostTitle}}" type="text" placeholder="Site Başlığı"> {% if err.PostTitle_error %}
                         <div class="invalid-feedback" style="display:block">{{err.PostTitle}}</div>
                         {% endif %}
                     </div>
 
                     <div class="form-group">
-                        <label> Content :</label> {% if err.PostContent_error %}
+                        <label> Açıklama :</label> {% if err.PostContent_error %}
                         <div class="invalid-feedback" style="display:block">{{err.PostContent}}</div>
                         {% endif %}
                         <textarea id="PostContent" name="PostContent" class="form-control">{{post.PostContent}}</textarea> {% if err.PostContent_error %}
@@ -66,13 +66,13 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Comment</strong>
+                            <strong>Kısa açıklama</strong>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="PostExcerpt">short Comment <span>  </span> </label>
-                                <textarea class="form-control {{err.PostExcerpt_valid}}" id="PostExcerpt" name="PostExcerpt" rows="9" placeholder="short Comment..">{{ post.PostExcerpt }}</textarea>
+                                <label for="PostExcerpt">Kısa açıklama <span> *başlık metinlerde olan </span> </label>
+                                <textarea class="form-control {{err.PostExcerpt_valid}}" id="PostExcerpt" name="PostExcerpt" rows="9" placeholder="Kısa Açıklama...">{{ post.PostExcerpt }}</textarea>
                             </div>
 
                         </div>
@@ -84,12 +84,12 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Categories</strong>
+                            <strong>Kategori Bilgileri</strong>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label></label>
+                                <label> Seçiniz (mecburi değildir)</label>
                                 <div>
                                     {% for cat in catsData%}
                                     <div class="form-check checkbox">
@@ -107,15 +107,15 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Language Select </strong>
+                            <strong>Dil Seçiniz</strong>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="languageSelect">Language Select </label>
+                                <label for="languageSelect">Dil seçiniz</label>
                                 <select class="form-control" name="languageSelect" id="languageSelect">
-                                      <option value="tr">TURKISH</option>
-                                      <option value="en">ENGLİSH</option>
+                                      <option value="tr">Türkçe</option>
+                                      <option value="en">İngilizce</option>
                                     </select>
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>PİCTURE</strong>
+                            <strong>Resim Bilgileri</strong>
                         </div>
 
                         <div class="card-body">
@@ -135,7 +135,7 @@
                             {% endif %}
                             <div class="col-md-4">
                                 <div id="alanOnizleme" style="display:none!important;">
-                                    <h5 class="text-center">your selected picture</h5>
+                                    <h5 class="text-center">Seçtiğiniz resim:</h5>
                                     <img id="resimOnizleme" src="" class="w-100" style="height:10rem!important;" />
                                 </div>
                             </div>
@@ -145,7 +145,7 @@
 
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input form-control {{err.picture_valid}}" name="picture" id="Picture">
+                                        <input type="file" multiple class="custom-file-input form-control {{err.picture_valid}}" name="picture" id="Picture">
                                         <label class="custom-file-label" for="Picture"></label>
                                     </div>
 
@@ -163,8 +163,8 @@
 
                         <div class="card-footer">
 
-                            <button class="btn btn-sm btn-primary" type="submit"> Save </button>
-                            <button class="btn btn-sm btn-danger" type="reset"> Cancel</button>
+                            <button class="btn btn-sm btn-primary" type="submit"> Kaydet</button>
+                            <button class="btn btn-sm btn-danger" type="reset"> VAZGEÇ</button>
                         </div>
                     </div>
                 </div>
@@ -177,11 +177,11 @@
 </form>
 
 {% endblock %} {% block jsInline %}
-<!-- <script src="/assets/vendors/jqueryValidate/jquery.validate.min.js"></script> -->
-<!-- <script src="/assets/vendors/jqueryUnob/jquery.validate.unobtrusive.min.js"></script> -->
-<link href="/assets//vendors/summernote/summernote-bs4.min.css" rel="stylesheet" />
-<script src="/assets/vendors/summernote/summernote-bs4.min.js"></script>
-<script src="/assets/js/summernote-file.js"></script>
+<!-- <script src="/assets/admin/vendors/jqueryValidate/jquery.validate.min.js"></script> -->
+<!-- <script src="/assets/admin/vendors/jqueryUnob/jquery.validate.unobtrusive.min.js"></script> -->
+<link href="/assets/admin/vendors/summernote/summernote-bs4.min.css" rel="stylesheet" />
+<script src="/assets/admin/vendors/summernote/summernote-bs4.min.js"></script>
+<script src="/assets/admin/js/summernote-file.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {

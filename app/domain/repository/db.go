@@ -16,15 +16,16 @@ var DB *gorm.DB
 
 //Repositories strcut
 type Repositories struct {
-	User           services.UserAppInterface
-	Post           services.PostAppInterface
-	Cat            services.CatAppInterface
-	CatPost        services.CatPostAppInterface
-	Lang           services.LanguageAppInterface
+	User    services.UserAppInterface
+	Post    services.PostAppInterface
+	Cat     services.CatAppInterface
+	CatPost services.CatPostAppInterface
+	Lang    services.LanguageAppInterface
+
 	WebArchive     services.WebArchiveAppInterface
 	WebArchiveLink services.WebArchiveLinksAppInterface
-
-	DB *gorm.DB
+	Options        services.OptionsAppInterface
+	DB             *gorm.DB
 }
 
 //DbConnect initial
@@ -66,8 +67,11 @@ func DbConnect(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName, debug, gorm
 		db.LogMode(false)
 	}
 	DB = db
+
 	return db
 }
+
+//https://techinscribed.com/different-approaches-to-pass-database-connection-into-controllers-in-golang/
 
 //RepositoriesInit initial
 func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
@@ -80,7 +84,9 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 		Lang:           LanguageRepositoryInit(db),
 		WebArchive:     WebArchiveRepositoryInit(db),
 		WebArchiveLink: WebArchiveLinksRepositoryInit(db),
-		DB:             db,
+		Options:        OptionRepositoryInit(db),
+
+		DB: db,
 	}, nil
 }
 
@@ -91,10 +97,13 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 
 //Automigrate This migrate all tables
 func (s *Repositories) Automigrate() error {
-	s.DB.AutoMigrate(&entity.WebArchive{}, &entity.WebArchiveLinks{}, &entity.User{}, &entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{},
+	s.DB.AutoMigrate(&entity.WebArchive{}, &entity.WebArchiveLinks{},
+
+		&entity.User{}, &entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{},
 		&entity.Languages{}, &entity.Modules{}, &entity.Notes{},
 		&entity.Options{})
 
+	// one to many (one=gruplar) (many=kurbanlar)
 	return s.DB.Model(&entity.WebArchiveLinks{}).AddForeignKey("web_archive_id", "web_archives(id)", "CASCADE", "CASCADE").Error // one to many (one=web_archives) (many=WebArchiveLinks)
 
 }

@@ -1,5 +1,5 @@
 <!--Loop over the `payload` variable, which is the list of articles-->
-{% extends "../../app.html" %} {% block content %}
+{% extends "../app.html" %} {% block content %}
  {% set RootName = 'admin-gKurban' %} 
  {% set routerName ='admin/gKurban' %}
 <style>
@@ -10,11 +10,11 @@
 
 <div class="row">  
     <div class="col-md-6"> 
-    <h1 class="title"><b>Proje Bitmesine Kalan Süre</b></h1>
+    <h1 class="title"><b>time</b></h1>
     <div class="countdown" id="normal-countdown" data-date="2021/04/10"></div>
 </div>
     <div class="col-md-6"> 
-    <h1 class="title"><b>Diğer Kalan Süre</b></h1>
+    <h1 class="title"><b> deadline </b></h1>
     <div class="countdown" id="kurban-countdown" data-date="2021/07/19"></div>
 </div>
 </div>
@@ -46,9 +46,8 @@
     {%endif%}
 
 
-
-
 </div>
+
 
 
 
@@ -73,7 +72,7 @@
 {% block jsInline %}
 
 
-<script src="/assets/js/jquery.countdown.min.js"></script>
+<script src="/assets/admin/js/jquery.countdown.min.js"></script>
 <script>
 
 

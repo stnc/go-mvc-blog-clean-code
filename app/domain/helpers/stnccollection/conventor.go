@@ -77,3 +77,16 @@ func StringtoUint64(inputStr string) (uintInt uint64) {
 	uintInt, _ = strconv.ParseUint(inputStr, 10, 64)
 	return uintInt
 }
+
+//StringToint string 2 int
+//TODO: error vermemek sorun olur mu ?
+func StringToint(inputStr string) (IntType int) {
+	IntType, _ = strconv.Atoi(inputStr)
+	return IntType
+}
+
+//IntToString int 2 string
+//TODO: error vermemek sorun olur mu ?
+func IntToString(inputStr int) string {
+	return strconv.Itoa(inputStr)
+}

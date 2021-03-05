@@ -1,0 +1,181 @@
+<!--Loop over the `payload` variable, which is the list of articles-->
+{% extends "../app.html" %} {% block content %} 
+{% set RootName = 'admin-hayvanBilgisi' %} {% set routerName = 'admin/options' %}
+<style>
+    .text-decoration-line-through {
+        text-decoration: line-through !important;
+    }
+</style>
+
+
+
+{% if flashMsg %}
+
+<!-- alert -->
+<div class="alert alert-info alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h5><i class="icon fas fa-check"></i> Uyarı!</h5>
+    {{flashMsg}}
+</div>
+<!-- /.alert -->
+
+{%endif%}
+
+
+
+
+<form method="POST" action="/{{routerName}}/update" accept-charset="UTF-8" class="form-control1" id="{{RootName}}-update" enctype="multipart/form-data">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <input name="_method" type="hidden" value="PUT">
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>{% if title %} {{ title }} - Otomasyon {% else %} STNC OTOMASYON SİSTEMi
+                                {% endif %}</strong>
+                            <small>Form</small>
+                        </div>
+
+
+                        <div class="card-body">
+
+
+
+                            <div class="form-group">
+                                <label for="SatisBirimFiyati1">Satış Birim Fiyatı 1</label>
+                                <input class="form-control" id="SatisBirimFiyati1" name="satis_birim_fiyati_1" value="{{satis_birim_fiyati_1}}" type="text"> 
+
+                            </div>
+
+
+                      
+
+                            <div class="form-group">
+                                <label for="SatisBirimFiyati2">Satış Birim Fiyatı 2</label>
+                                <input class="form-control" id="SatisBirimFiyati2" name="satis_birim_fiyati_2" value="{{satis_birim_fiyati_2}}" type="text"> 
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="SatisBirimFiyati3">Satış Birim Fiyatı 3</label>
+                                <input class="form-control" id="SatisBirimFiyati3" name="satis_birim_fiyati_3" value="{{satis_birim_fiyati_3}}" type="text"> 
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alis_birim_fiyati_1">Alış Birim Fiyatı 1</label>
+                                <input class="form-control" id="alis_birim_fiyati_1" name="alis_birim_fiyati_1" value="{{alis_birim_fiyati_1}}" type="text"> 
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alis_birim_fiyati_2">Alış Birim Fiyatı 2</label>
+                                <input class="form-control" id="alis_birim_fiyati_2" name="alis_birim_fiyati_2" value="{{alis_birim_fiyati_2}}" type="text"> 
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alis_birim_fiyati_3">Alış Birim Fiyatı 3</label>
+                                <input class="form-control" id="alis_birim_fiyati_3" name="alis_birim_fiyati_3" value="{{alis_birim_fiyati_3}}" type="text"> 
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>{% if title %} {{ title }} - Otomasyon {% else %} STNC OTOMASYON SİSTEMi
+                                {% endif %}</strong>
+                            <small>Form</small>
+                        </div>
+
+
+                        <div class="card-body">
+
+
+                           
+                            <div class="form-group">
+                                <label for="SatisBirimFiyati1">Hisse Adeti</label>
+                                <input class="form-control" id="hisseAdeti" name="hisse_adeti" value="{{hisse_adeti}}" type="text"> 
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="d">Düşük ağırlık için kilo aralığı</label>
+                                <input class="form-control" id="d" name="dusuk_agirlik_kilo" value="{{dusuk_agirlik_kilo}}" type="text"> 
+                            </div>   
+                            
+                            <div class="form-group">
+                                <label for="o">Orta ağırlık için kilo aralığı</label>
+                                <input class="form-control" id="o" name="orta_agirlik_kilo" value="{{dusuk_agirlik_kilo}}" type="text"> 
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="y">Yüksek ağırlık için kilo aralığı</label>
+                                <input class="form-control" id="y" name="orta_agirlik_kilo" value="{{dusuk_agirlik_kilo}}" type="text"> 
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+        
+                <div class="col-md-12">
+                    <div class="card">
+
+
+                        <div class="card-body">
+                            <input class="form-control {{err.ID}}" id="ID" name="ID" value="{{post.ID}}" type="hidden">
+
+                            <button class="btn btn-sm btn-primary" type="submit"> Kaydet</button>
+                            <button class="btn btn-sm btn-danger" type="reset"> VAZGEÇ</button>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+
+{% endblock %}
+
+{% block jsInline %}
+<script src="/assets/admin/js/jquery.mask.min.js"></script>
+
+
+
+<script type="text/javascript">
+
+    $(function() { 
+        $('#SatisBirimFiyati1').mask('###0.00', {reverse: true});
+        $('#SatisBirimFiyati2').mask('###0.00', {reverse: true});
+        $('#SatisBirimFiyati3').mask('###0.00', {reverse: true});
+        $('#alis_birim_fiyati_1').mask('###0.00', {reverse: true});
+        $('#alis_birim_fiyati_2').mask('###0.00', {reverse: true});
+        $('#alis_birim_fiyati_3').mask('###0.00', {reverse: true});
+    });
+
+
+</script>
+{% endblock %}

@@ -11,11 +11,11 @@ import (
 	"reflect"
 	"stncCms/app/domain/entity"
 	stnccollection "stncCms/app/domain/helpers/stnccollection"
+	"stncCms/app/domain/helpers/stncupload"
 
 	"stncCms/app/domain/helpers/stnchelper"
 	"stncCms/app/domain/helpers/stncsession"
 	"stncCms/app/services"
-	"stncCms/app/web.api/controller/fileupload"
 	"strconv"
 	"strings"
 
@@ -33,7 +33,6 @@ type Post struct {
 	catApp      services.CatAppInterface
 	userApp     services.UserAppInterface
 	languageApp services.LanguageAppInterface
-	fileUpload  fileupload.UploadFileInterface
 }
 
 const viewPathPost = "admin/post/"
@@ -44,14 +43,13 @@ func test(data string) string {
 
 //InitPost post controller constructor
 func InitPost(pApp services.PostAppInterface, catsPostApp services.CatPostAppInterface,
-	pcatApp services.CatAppInterface, langApp services.LanguageAppInterface, uApp services.UserAppInterface, fd fileupload.UploadFileInterface) *Post {
+	pcatApp services.CatAppInterface, langApp services.LanguageAppInterface, uApp services.UserAppInterface) *Post {
 	return &Post{
 		postApp:     pApp,
 		catApp:      pcatApp,
 		catpostApp:  catsPostApp,
 		userApp:     uApp,
 		languageApp: langApp,
-		fileUpload:  fd,
 	}
 }
 
@@ -61,16 +59,29 @@ var (
 
 //Index list
 func (access *Post) Index(c *gin.Context) {
+	// allpost, err := access.postApp.GetAllPost()
+	// fmt.Println(allfood)
 	stncsession.IsLoggedInRedirect(c)
+
 	var total int64
 	access.postApp.Count(&total)
 	postsPerPage := 3
 	paginator := pagination.NewPaginator(c.Request, postsPerPage, total)
 	offset := paginator.Offset()
+
 	posts, _ := access.postApp.GetAllP(postsPerPage, offset)
+
+	// var tarih stncdatetime.Inow
+
+	// fmt.Println(tarih.TarihFullSQL("2020-05-21 05:08"))
+	// fmt.Println(tarih.AylarListe("May"))
+	// fmt.Println(tarih.Tarih())
+	// //	tarih.FormatTarihForMysql("2020-05-17 05:08:40")
+	//	tarih.FormatTarihForMysql("2020-05-17 05:08:40")
+
 	viewData := pongo2.Context{
 		"paginator": paginator,
-		"title":     "Post Add",
+		"title":     "İçerik Ekleme",
 		"posts":     posts,
 
 		"csrf": csrf.GetToken(c),
@@ -91,7 +102,7 @@ func (access *Post) Create(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	cats, _ := access.catApp.GetAll()
 	viewData := pongo2.Context{
-		"title":    "Post add",
+		"title":    "İçerik Ekleme",
 		"catsData": cats,
 		"csrf":     csrf.GetToken(c),
 	}
@@ -114,11 +125,19 @@ func (access *Post) Store(c *gin.Context) {
 	savePostError = post.Validate()
 
 	sendFileName := "picture"
-	filename, uploadError := upload(c, sendFileName)
-	if filename == "false" {
-		savePostError[sendFileName+"_error"] = uploadError
-		savePostError[sendFileName+"_valid"] = "is-invalid"
-	}
+	// filenameForm, _ := c.FormFile(sendFileName)
+	// filename, uploadError := stncupload.NewFileUpload().UploadFile(filenameForm, c.PostForm("Resim2"))
+
+	form, _ := c.MultipartForm()
+	files := form.File[sendFileName]
+	stncupload.NewFileUpload().MultipleUploadFile(files, c.PostForm("Resim2"))
+	// filename, uploadError := stncupload.NewFileUpload().MultipleUploadFile(files, c.PostForm("Resim2"))
+
+	// if filename == "false" {
+	// 	savePostError[sendFileName+"_error"] = uploadError
+	// 	savePostError[sendFileName+"_valid"] = "is-invalid"
+	// }
+
 	// filename := "bos"
 	fmt.Println(savePostError)
 	catsPost := c.PostFormArray("cats")
@@ -143,7 +162,7 @@ func (access *Post) Store(c *gin.Context) {
 	// }
 
 	if len(savePostError) == 0 {
-		post.Picture = filename
+		post.Picture = "filename"
 		saveData, saveErr := access.postApp.Save(&post)
 		if saveErr != nil {
 			savePostError = saveErr
@@ -164,13 +183,13 @@ func (access *Post) Store(c *gin.Context) {
 		language.Language = lang
 		access.languageApp.Save(&language)
 
-		stncsession.SetFlashMessage("Record successfully added", c)
+		stncsession.SetFlashMessage("Kayıt başarı ile eklendi", c)
 		c.Redirect(http.StatusMovedPermanently, "/admin/post/edit/"+lastID)
 		return
 	}
 
 	viewData := pongo2.Context{
-		"title":    "post added",
+		"title":    "içerik ekleme",
 		"catsPost": catsPost,
 		"catsData": catsData,
 		"csrf":     csrf.GetToken(c),
@@ -216,7 +235,7 @@ func (access *Post) Edit(c *gin.Context) {
 		}
 		if posts, err := access.postApp.GetByID(postID); err == nil {
 			viewData := pongo2.Context{
-				"title":    "post edt",
+				"title":    "içerik ekleme",
 				"catsPost": catsPost,
 				"catsData": catsData,
 				"post":     posts,
@@ -248,11 +267,19 @@ func (access *Post) Update(c *gin.Context) {
 	savePostError = post.Validate()
 
 	sendFileName := "picture"
+
 	//	filename, uploadError := upload(c, sendFileName)
-	filenameForm, _ := c.FormFile(sendFileName)
+	//	filenameForm, _ := c.FormFile(sendFileName)
 	// filename2, data2, data3 := c.Request.FormFile(sendFileName)
 
-	filename, uploadError := access.fileUpload.UploadFile(filenameForm)
+	//	filename, uploadError := stncupload.NewFileUpload().UploadFile(filenameForm)
+
+	// form, _ := c.MultipartForm()
+	// files := form.File[sendFileName]
+	// stncupload.NewFileUpload().MultipleUploadFile(files, c.PostForm("Resim2"))
+
+	filenameForm, _ := c.FormFile(sendFileName)
+	filename, uploadError := stncupload.NewFileUpload().UploadFile(filenameForm, c.PostForm("Resim2"))
 
 	if filename == "false" {
 		savePostError[sendFileName+"_error"] = uploadError
@@ -275,7 +302,7 @@ func (access *Post) Update(c *gin.Context) {
 	}
 
 	if len(savePostError) == 0 {
-		post.Picture = filename
+		post.Picture = "filename"
 		saveData, saveErr := access.postApp.Update(&post)
 		if saveErr != nil {
 			savePostError = saveErr
@@ -290,14 +317,14 @@ func (access *Post) Update(c *gin.Context) {
 			saveCat, _ := access.catpostApp.Save(&catPost)
 			catPost.ID = saveCat.ID + 1
 		}
-		stncsession.SetFlashMessage("Record successfully edit", c)
+		stncsession.SetFlashMessage("Kayıt başarı ile düzenlendi", c)
 
 		c.Redirect(http.StatusMovedPermanently, "/admin/post/edit/"+id)
 		return
 	}
 
 	viewData := pongo2.Context{
-		"title":    "Post Add",
+		"title":    "içerik ekleme",
 		"catsPost": catsPost,
 		"catsData": catsData,
 		"err":      savePostError,
@@ -349,6 +376,12 @@ func postModel(c *gin.Context) (post entity.Post, idD uint64, idStr string) {
 	return post, idN, id
 }
 
+/*
+kullanımı
+	sendFileName := "picture"
+	filename, uploadError := upload(c, sendFileName)
+*/
+//buradaki sıkıntı edit sırasında resimde bir işlem yapmazsan veritababından resimi siliyor
 //TODO: boyutlandırma https://github.com/disintegration/imaging
 func upload(c *gin.Context, formFilename string) (string, string) {
 
@@ -370,7 +403,7 @@ func upload(c *gin.Context, formFilename string) (string, string) {
 		var size2 = strconv.FormatUint(uint64(size), 10)
 		if size > int64(1024000*5) { // 1 MB
 			// return "", errors.New("sorry, please upload an Image of 500KB or less")
-			errorReturn = "Image size is too high, maximum 5 MB" + size2
+			errorReturn = "Resim boyutu çok yüksek maximum 5 MB olmalıdır" + size2
 			filename = "false"
 		}
 
@@ -410,7 +443,7 @@ func upload(c *gin.Context, formFilename string) (string, string) {
 			if err != nil {
 				errorReturn = err.Error()
 			}
-			errorReturn = filenameOrg + " it is not an actual image file"
+			errorReturn = filenameOrg + " gerçek bir resim dosyası değildir"
 			filename = "false"
 		}
 

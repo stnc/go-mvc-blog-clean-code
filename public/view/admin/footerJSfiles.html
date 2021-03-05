@@ -1,0 +1,15 @@
+    <!-- CoreUI and necessary plugins-->
+    <script src="/assets/admin/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+    <!--[if IE]><!-->
+    <script src="/assets/admin/vendors/@coreui/icons/js/svgxuse.min.js"></script>
+    <!--<![endif]-->
+    <!-- Plugins and scripts required by this view-->
+    <script src="/assets/admin/vendors/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <!-- <script src="/assets/admin/vendors/jquery-ui/jquery-ui.min.js"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/admin/vendors/@coreui/utils/js/coreui-utils.js"></script>
+
+{% for jsURL in jsList %}
+<script src="{{jsURL}}"></script>
+{% endfor %}

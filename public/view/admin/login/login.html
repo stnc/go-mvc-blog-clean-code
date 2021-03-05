@@ -12,7 +12,7 @@
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
     <title>CoreUI Pro Bootstrap Admin Template</title>
 
-    <link href="/assets/css/style.min.css" rel="stylesheet">
+    <link href="/assets/admin/css/style.min.css" rel="stylesheet">
 
     <meta name="robots" content="noindex">
 
@@ -48,7 +48,7 @@
                                 <div class="input-group-prepend"><span class="input-group-text">
                                         <svg class="c-icon">
                                             
-                                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                                            <use xlink:href="/assets/admin/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
                                         </svg></span></div>
 
                                         <input name="_csrf" type="hidden" value="{{ csrf }}">
@@ -64,7 +64,7 @@
                             <div class="input-group mb-4">
                                 <div class="input-group-prepend"><span class="input-group-text">
                                         <svg class="c-icon">
-                                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                                            <use xlink:href="/assets/admin/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
                                         </svg></span></div>
                                         <input class="form-control {{err.Password_valid}}" id="Password" value="111111-6" name="Password" placeholder="Şifre" value="{{Password}}" type="text">
                                         {% if err.Password_error %}
@@ -99,9 +99,9 @@
     </div>
 
 
-    <script src="/assets/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+    <script src="/assets/admin/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
     <!--[if IE]><!-->
-    <script src="/assets/vendors/@coreui/icons/js/svgxuse.min.js"></script>
+    <script src="/assets/admin/vendors/@coreui/icons/js/svgxuse.min.js"></script>
     <!--<![endif]-->
     <script>
         document.addEventListener("DOMContentLoaded", function (event) {

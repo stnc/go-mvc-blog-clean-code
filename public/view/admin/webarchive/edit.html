@@ -1,5 +1,5 @@
 <!--Loop over the `payload` variable, which is the list of articles-->
-{% extends "../../app.html" %} {% block content %} {% set RootName = 'admin-webarchive' %} {% set routerName = 'admin/webarchive' %} {% if flashMsg %}
+{% extends "../app.html" %} {% block content %} {% set RootName = 'admin-webarchive' %} {% set routerName = 'admin/webarchive' %} {% if flashMsg %}
 <div class="row">
     <!-- alert -->
     <div class="col-md-12 flashMsg">
@@ -29,14 +29,14 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label for="Title">Title</label>
+                        <label for="Title">İçerik Başlığı</label>
                         <input class="form-control {{err.Title_valid}}" id="Title" name="Title"
                          value="{{post.Title}}" type="text" placeholder="Site Başlığı"> {% if err.Title_error %}
                         <div class="invalid-feedback" style="display:block">{{err.Title}}</div>
                         {% endif %}
                     </div>
 
-                    <label for="Title">Links </label>
+                    <label for="Title">Linkler </label>
                     <input  id="LinksAll" name="LinksAll" value="{{post.LinksAll}}" type="hidden">
                     <div class="row">
 
@@ -48,7 +48,7 @@
                         <input class="form-control" id="Title" readonly disabled name="Title" value="{{WebArchiveLink.Link}}" type="text"> 
                     </div>
                     <div class="col-sm-3">
-                        <a href="/admin/webarchive/run/{{WebArchiveLink.ID}}" class="btn btn-sm btn-primary"> RUN</a>
+                        <a href="/admin/webarchive/run/{{WebArchiveLink.ID}}" class="btn btn-sm btn-primary"> Çalıştır</a>
                         {% if WebArchiveLink.Pdf %}
                         <a href="#" class="btn btn-sm btn-warning"> PDF</a>
                         {% endif %}
@@ -66,16 +66,19 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Excerpt  </strong>
+                            <strong>Short Content   </strong>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="Excerpt">Excerpt  </label>
+                                <label for="Excerpt">Short Content   </label>
                                 <textarea class="form-control {{err.Excerpt_valid}}" id="Excerpt" name="Excerpt" rows="9" placeholder="Short Content  Content ...">{{ post.Excerpt }}</textarea>
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
 
 
@@ -83,17 +86,20 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Actions</strong>
+                            <strong>Hareketler</strong>
                         </div>
         
+                
                         <div class="card-footer">
-                            <button class="btn btn-sm btn-primary" type="submit"> Save</button>
-                            <button class="btn btn-sm btn-danger" type="reset"> Cancel</button>
+        
+                            <button class="btn btn-sm btn-primary" type="submit"> Kaydet</button>
+                            <button class="btn btn-sm btn-danger" type="reset"> İptal</button>
                         </div>
-
                     </div>
                 </div>
-        
+           
+
+
             </div>
         </div>
      

@@ -27,6 +27,7 @@ public/upl/*
 !public/upl/image.png
 bin/
 dummy/
+orginal/
 src/github.com/
 src/golang.org/
 src/gopkg.in/
@@ -41,4 +42,3 @@ config.yml
 Versions/.DS_Store
 other/.DS_Store
 .DS_Store
-.env

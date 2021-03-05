@@ -3,7 +3,7 @@ import axios from "axios";
 import { Card, Header, Form, Icon, Image, Grid ,Divider} from "semantic-ui-react";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
-let endpoint = "http://kurban.selmantunc.com.tr";
+let endpoint = "http://localhost:8888";
 
 class MainPage extends Component {
   constructor(props) {
