@@ -5,6 +5,27 @@
 
 ## golang solid principles
 
+
+If you liked go-mvc-blog-clean-code project or if it helped you, please give a star ⭐ for this repository. 
+That will not only help strengthen our golang community but also improve skills about the clean code for 
+golang developers in around the world. 
+
+Thank you very much 👍
+
+---------------
+
+Software engineering principles, from Robert C. Martin's book Clean Code, adapted for golang
+This is not a style guide. It's a guide to producing readable, reusable, and refactorable software in golang
+
+Not every principle herein has to be strictly followed, and even fewer will be universally agreed upon. 
+These are guidelines and nothing more, but they are ones codified over many years of collective experience by the authors of Clean Code.
+
+
+
+
+
+## REACT USES 
+
 uses 
 
 https://react.semantic-ui.com/
